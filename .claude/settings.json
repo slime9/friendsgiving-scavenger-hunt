@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(npm run deploy*)",
+      "Bash(node scripts/deploy.mjs*)",
+      "Bash(git push*)",
+      "Bash(gh api -X POST repos/slime9/friendsgiving-scavenger-hunt/pages*)",
+      "Bash(gh pr merge*)"
+    ]
+  }
+}
