@@ -37,7 +37,6 @@ function notFound() {
 
 function renderClue(p) {
   show(el('section', { class: 'card' },
-    el('p', { class: 'eyebrow' }, `Clue ${p.n} of ${p.total}`),
     el('div', { class: 'clue' }, p.text),
     el('div', { class: 'code-box' },
       el('p', { class: 'code-label' }, 'Your secret code for the next clue'),
