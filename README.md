@@ -27,6 +27,7 @@ public and the file holds every clue and code. The first `npm run build` creates
 {
   "baseUrl": "https://slime9.github.io/friendsgiving-scavenger-hunt/",  // where the site is hosted
   "startCode": null,          // null = clue 1 is open. Set a code to lock clue 1 too.
+  "qrSizeInches": 1,          // printed QR size, 0.5 to 4. Leave it out for 1 inch.
   "clues": [
     {
       "spot": "bookshelf, living room",   // where THIS QR code is hidden (shown only on your print sheet)
@@ -65,12 +66,18 @@ public and the file holds every clue and code. The first `npm run build` creates
 
 ## Printing
 
-Open `dist/print.html` in Chrome (double-click it) and print it at 100% scale.
+Open `dist/print.html` in Chrome (double-click it) and print it at **100% scale**, not "Fit to
+page", or the codes come out a different size.
 
 - **Page 1 is the answer key.** It lists every QR code, its hiding spot, the code that unlocks it,
   and the code it reveals. Keep it to yourself.
-- **The cards follow, two per page.** Each card has a "host only" stub with its number and spot. Cut
-  the stub off before hiding the card.
+- **The codes follow, packed onto page 2.** They're small (`qrSizeInches`, 1 inch by default) with
+  no text on the front. Cut each one out on its dashed square, and keep the white border inside it,
+  which the camera needs. The tiny label under each code (number and spot) is for you: cut it off
+  before hiding.
+- **Size:** 1 inch scans from about 15–20 cm on a modern phone. Below about 0.75 inch some phones
+  struggle, so test any smaller size with the guests' kind of phones before printing them all.
+  A code on a dark or busy surface needs its white border to scan.
 - Each clue's text should lead to the **next** card's spot. The last clue should lead to the FINALE
   card.
 

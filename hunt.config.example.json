@@ -1,6 +1,7 @@
 {
   "baseUrl": "https://slime9.github.io/friendsgiving-scavenger-hunt/",
   "startCode": null,
+  "qrSizeInches": 1,
   "clues": [
     {
       "spot": "PLACEHOLDER: where QR #1 is posted (the starting point)",
