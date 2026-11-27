@@ -39,6 +39,8 @@ config.clues.forEach((c, i) => {
 const f = config.finale;
 if (!f || typeof f.title !== 'string' || typeof f.message !== 'string') fail('finale needs "title" and "message"');
 if (config.startCode != null && normalizeCode(config.startCode).length < 3) fail('startCode must be null or at least 3 letters/digits');
+const qrSize = config.qrSizeInches ?? 1;
+if (typeof qrSize !== 'number' || qrSize < 0.5 || qrSize > 4) fail('qrSizeInches must be a number from 0.5 to 4');
 
 // ---- fill in slugs and codes (once) ----------------------------------------
 const pick = (chars, n) => Array.from({ length: n }, () => chars[randomInt(chars.length)]).join('');
@@ -109,15 +111,13 @@ for (const e of entries) {
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
 const cards = [];
 for (const e of entries) {
-  const svg = await QRCode.toString(e.url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M' });
+  // Low error correction = fewer, larger dots, which matters more than damage tolerance at small sizes.
+  // A 2-module white border (the "quiet zone") is part of the code: cut outside it.
+  const svg = await QRCode.toString(e.url, { type: 'svg', margin: 2, errorCorrectionLevel: 'L' });
   cards.push(`
   <section class="card">
-    <div class="face">
-      <p class="hey">🦃 You found something!</p>
-      <div class="qr">${svg}</div>
-      <p class="scan">Scan with your phone camera</p>
-    </div>
-    <div class="stub">✂ host only, cut off before hiding · <b>${esc(e.label)}</b> · ${esc(e.page.spot || '(no spot set)')}</div>
+    <div class="qr">${svg}</div>
+    <div class="stub"><b>${esc(e.label)}</b> ${esc(e.page.spot || '(no spot set)')}</div>
   </section>`);
 }
 const rows = entries.map((e) => `
@@ -134,23 +134,21 @@ fs.writeFileSync(path.join(outDir, 'print.html'), `<!doctype html>
   td, th { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
   .mono { font-family: ui-monospace, Menlo, monospace; font-size: 15px; letter-spacing: 0.1em; }
   .url { font-size: 10px; word-break: break-all; }
-  .card { height: 5.3in; display: flex; flex-direction: column; justify-content: space-between; border-bottom: 1px dashed #999; page-break-inside: avoid; }
-  .card:nth-of-type(2n) { page-break-after: always; }
-  .face { text-align: center; padding-top: 0.25in; }
-  .hey { font-size: 28px; font-weight: 800; margin: 0 0 8px; }
-  .qr svg { width: 3.4in; height: 3.4in; }
-  .scan { font-size: 18px; margin: 4px 0 0; }
-  .stub { border-top: 1px dashed #999; padding: 8px 0.4in; font-size: 12px; color: #555; }
-  @media print { .noprint { display: none; } }
+  .cards { display: flex; flex-wrap: wrap; gap: 0.35in; padding: 0.5in; align-items: flex-start; }
+  .card { width: max(${qrSize}in, 1.1in); page-break-inside: avoid; break-inside: avoid; }
+  .qr svg { width: ${qrSize}in; height: ${qrSize}in; display: block; outline: 1px dashed #bbb; }
+  .stub { margin-top: 0.12in; padding-top: 4px; border-top: 1px dashed #bbb; font-size: 8px; line-height: 1.25; color: #555; overflow-wrap: anywhere; }
 </style></head><body>
 <div class="key">
   <h1>Answer key (don’t leave this lying around)</h1>
   <p>Clue 1 is ${entries[0].lock ? `locked with start code <b class="mono">${esc(entries[0].lock)}</b>` : 'open with no code; post it where everyone starts'}.
   Each clue’s text should lead to the <i>next</i> spot. Cut the stub off every card before hiding it.</p>
   <table><tr><th>QR</th><th>Hidden at</th><th>Code to unlock</th><th>Code it reveals</th><th>URL</th></tr>${rows}</table>
-  <p class="noprint">Print with “Background graphics” off and scale at 100%. The cards start on page 2, two per page.</p>
+  <p>Print at <b>100% scale</b> (not “Fit to page”) or the codes come out a different size. Codes are ${qrSize}" square.
+  Cut each one out on its dashed square. The white border inside the square is part of the code, so keep it.
+  The label under each code (number and spot) is for you: cut it off before hiding.</p>
 </div>
-${cards.join('\n')}
+<div class="cards">${cards.join('\n')}</div>
 </body></html>
 `);
 

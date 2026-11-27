@@ -10,6 +10,10 @@ at https://slime9.github.io/friendsgiving-scavenger-hunt/), and a phone test of 
    clues. Then run `npm run build` and `npm run deploy`.
 2. **Phone-check the real clues** after that deploy. Long clue text is the one thing the placeholder
    test didn't cover.
-3. **Print** `dist/print.html` at 100% scale. Cut off the stubs and hide the cards. Keep page 1
+3. **Print one test code first.** Print `dist/print.html` at 100% scale (not "Fit to page"),
+   measure a code (it should be 1 inch), and scan it with your phone from about 15–20 cm. If you
+   want smaller, set `qrSizeInches` in `hunt.config.json`, rebuild, and scan again, ideally with an
+   older phone too. Then print them all. Cut each code out on its dashed square, keeping the white
+   border, cut off the label, and hide them. Keep page 1
    (the answer key) yourself.
 4. **Back up `hunt.config.json`.** It exists only on this laptop.
