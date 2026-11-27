@@ -1,0 +1,23 @@
+{
+  "baseUrl": "https://slime9.github.io/friendsgiving-scavenger-hunt/",
+  "startCode": null,
+  "clues": [
+    {
+      "spot": "PLACEHOLDER: where QR #1 is posted (the starting point)",
+      "text": "PLACEHOLDER clue 1. This should lead players to the spot of QR #2."
+    },
+    {
+      "spot": "PLACEHOLDER: where QR #2 is hidden",
+      "text": "PLACEHOLDER clue 2. This should lead players to the spot of QR #3."
+    },
+    {
+      "spot": "PLACEHOLDER: where QR #3 is hidden",
+      "text": "PLACEHOLDER clue 3, the last clue. This should lead players to the finale QR."
+    }
+  ],
+  "finale": {
+    "spot": "PLACEHOLDER: where the finale QR is hidden",
+    "title": "You did it! 🎉",
+    "message": "Congratulations, master sleuth! 🦃🥧\n\nFind Andy and show him this screen to claim 3 raffle tickets!"
+  }
+}

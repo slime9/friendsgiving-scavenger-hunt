@@ -1,0 +1,4 @@
+node_modules/
+dist/
+hunt.config.json
+.DS_Store
